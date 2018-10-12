@@ -31,4 +31,3 @@ def translate_msg(k,msg):
 
 for i in range(1,max_siz):
     print('Key : {} Translation : {}'.format(i,translate_msg(i,msg)))
-
