@@ -1,5 +1,7 @@
 """
 Ceasr cipher algorithm
+ciphertext is decrypted with 26 different possible keys and them each decrypted text is goodled.The decoded text with key 3 was giving meaningful french text.
+Thanks to https://inventwithpython.com/chapter14.html and google
 """
 msg = "kbslrpfknrfbqbwmxpbqobebobru"
 max_siz = 26
