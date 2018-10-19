@@ -3,7 +3,7 @@ Thanks for the below sources
 https://www.dlitz.net/software/pycrypto/api/current/Crypto.Cipher.DES-module.html
 https://www.laurentluce.com/posts/python-and-cryptography-with-pycrypto/
 
-Gone through lot of various resources in google to understand the decryption time performance per second.None of the
+Gone through lot of various resources in google to understand the decryption time performance per second.
 https://crypto.stackexchange.com/questions/39923/how-to-calculate-time-taken-by-encryption gave some insight of variant attribute in decryption time in terms of processor,speed,data size and algorithm.
 However I ended up implementing with time module to measure the time performance in an executed environment.But its not or very close to static.In each execution the time is dynamic.Hence the decryption time is calculated based on 100 different runtime with same plaintext and key
 
