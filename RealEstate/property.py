@@ -1,7 +1,7 @@
 class Property:
-    def __init__(self,square_feet='',beds='',baths='',**kwarg):
+    def __init__(self, square_feet='', beds='', baths='', **kwarg):
         super().__init__(**kwarg)
-        self.square_feet=square_feet
+        self.square_feet = square_feet
         self.beds = beds
         self.baths = baths
 
@@ -12,16 +12,19 @@ class Property:
         print("bedrooms: {}".format(self.beds))
         print("bathrooms: {}".format(self.baths))
 
-    def promt_init():
-        return dict(square_feet=input("Enter the square feet: "),beds=input("Enter number of bedrooms"),baths=input("Enter number of pathrooms: "))
-    promt_init = staticmethod(promt_init)
+    @staticmethod
+    def prompt_init():
+        return dict(square_feet=input("Enter the square feet: "), beds=input("Enter number of bedrooms: "),
+                    baths=input("Enter number of bathrooms: "))
+
+    # prompt_init = staticmethod(prompt_init)
 
 
 class Apartment(Property):
-    valid_laundries = ("coin","ensuite","none")
-    valid_balconies = ("yes","no","solarium")
+    valid_laundries = ("coin", "ensuite", "none")
+    valid_balconies = ("yes", "no", "solarium")
 
-    def __init__(self,balcony='',laundry='',**kwargs):
+    def __init__(self, balcony='', laundry='', **kwargs):
         super().__init__(**kwargs)
         self.balcony = balcony
         self.laundry = laundry
@@ -33,44 +36,48 @@ class Apartment(Property):
         print("Laundry : {}".format(self.laundry))
         print("Balcony: {}".format(self.balcony))
 
-
-
-
-    def promt_init():
-        parent_init = Property.promt_init()
-        laundry = get_valid_input("What laundry facilities does the property have? ",Apartment.valid_laundries)
-        balcony = get_valid_input("Does property have a balcony? ",Apartment.valid_balconies)
-        parent_init.update({"laundry" : laundry,"balcony":balcony})
+    @staticmethod
+    def prompt_init():
+        parent_init = Property.prompt_init()
+        laundry = get_valid_input("What laundry facilities does the property have? ", Apartment.valid_laundries)
+        balcony = get_valid_input("Does property have a balcony? ", Apartment.valid_balconies)
+        parent_init.update({"laundry": laundry, "balcony": balcony})
         return parent_init
-    promt_init = staticmethod(promt_init)
 
-def get_valid_input(input_string,valid_options):
+    # prompt_init = staticmethod(prompt_init)
+
+
+def get_valid_input(input_string, valid_options):
     input_string += " ({}) ".format(", ".join(valid_options))
     response = input(input_string)
 
     while response not in valid_options:
-        response=input(input_string)
+        response = input(input_string)
     return response
 
 
 class House(Property):
     valid_garage = ("attached", "detached", "none")
     valid_fenced = ("yes", "no")
+
     def __init__(self, num_stories='',
-    garage='', fenced='', **kwargs):
+                 garage='', fenced='', **kwargs):
         super().__init__(**kwargs)
         self.garage = garage
         self.fenced = fenced
         self.num_stories = num_stories
+
     def display(self):
         super().display()
         print("HOUSE DETAILS")
+        print("--------------")
         print("# of stories: {}".format(self.num_stories))
         print("garage: {}".format(self.garage))
         print("fenced yard: {}".format(self.fenced))
 
-    def promt_init():
-        parent_init = Property.promt_init()
+    @staticmethod
+    def prompt_init():
+        parent_init = Property.prompt_init()
 
         fenced = get_valid_input("Is the yard fenced? ",
                                  House.valid_fenced)
@@ -83,26 +90,34 @@ class House(Property):
             "num_stories": num_stories
         })
         return parent_init
-    promt_init = staticmethod(promt_init)
+
+    # prompt_init = staticmethod(prompt_init)
+
 
 class Purchase:
     def __init__(self, price='', taxes='', **kwargs):
         super().__init__(**kwargs)
         self.price = price
         self.taxes = taxes
+
     def display(self):
         super().display()
+        print("--------------")
         print("PURCHASE DETAILS")
         print("selling price: {}".format(self.price))
         print("estimated taxes: {}".format(self.taxes))
-    def promt_init():
+
+    @staticmethod
+    def prompt_init():
         return dict(
-        price=input("What is the selling price? "),
-        taxes=input("What are the estimated taxes? "))
-    promt_init = staticmethod(promt_init)
+            price=input("What is the selling price? "),
+            taxes=input("What are the estimated taxes? "))
+
+    # prompt_init = staticmethod(prompt_init)
+
 
 class Rental:
-    def __init__(self, furnished='', utilities='',rent='', **kwargs):
+    def __init__(self, furnished='', utilities='', rent='', **kwargs):
         super().__init__(**kwargs)
         self.furnished = furnished
         self.rent = rent
@@ -111,12 +126,14 @@ class Rental:
     def display(self):
         super().display()
         print("RENTAL DETAILS")
+        print("--------------")
         print("rent: {}".format(self.rent))
         print("estimated utilities: {}".format(
             self.utilities))
         print("furnished: {}".format(self.furnished))
 
-    def promt_init():
+    @staticmethod
+    def prompt_init():
         return dict(
             rent=input("What is the monthly rent? "),
             utilities=input(
@@ -125,37 +142,138 @@ class Rental:
                 "Is the property furnished? ",
                 ("yes", "no")))
 
-    promt_init = staticmethod(promt_init)
+    # prompt_init = staticmethod(prompt_init)
+
 
 class HouseRental(Rental, House):
-    def promt_init():
-        init = House.promt_init()
-        init.update(Rental.promt_init())
+    @staticmethod
+    def prompt_init():
+        init = House.prompt_init()
+        init.update(Rental.prompt_init())
         return init
-    promt_init = staticmethod(promt_init)
+
+    # prompt_init = staticmethod(prompt_init)
+
 
 class ApartmentRental(Rental, Apartment):
+    @staticmethod
     def prompt_init():
         init = Apartment.prompt_init()
         init.update(Rental.prompt_init())
         return init
-    prompt_init = staticmethod(prompt_init)
+
+    # prompt_init = staticmethod(prompt_init)
+
+
 class ApartmentPurchase(Purchase, Apartment):
+    @staticmethod
     def prompt_init():
         init = Apartment.prompt_init()
         init.update(Purchase.prompt_init())
         return init
-    prompt_init = staticmethod(prompt_init)
+
+    # prompt_init = staticmethod(prompt_init)
+
+
 class HousePurchase(Purchase, House):
+    @staticmethod
     def prompt_init():
         init = House.prompt_init()
         init.update(Purchase.prompt_init())
         return init
-    prompt_init = staticmethod(prompt_init)
+
+    # prompt_init = staticmethod(prompt_init)
+
 
 class Agent:
+    type_map = {
+        ("house", "rental"): HouseRental,
+        ("house", "purchase"): HousePurchase,
+        ("apartment", "rental"): ApartmentRental,
+        ("apartment", "purchase"): ApartmentPurchase
+    }
+
     def __init__(self):
         self.property_list = []
+
     def display_properties(self):
         for property in self.property_list:
             property.display()
+
+    def add_property(self):
+        property_type = get_valid_input(
+            "What type of property? ",
+            ("house", "apartment")).lower()
+
+        payment_type = get_valid_input(
+            "What payment type? ",
+            ("purchase", "rental")).lower()
+        PropertyClass = self.type_map[
+            (property_type, payment_type)]
+        init_args = PropertyClass.prompt_init()
+        self.property_list.append(PropertyClass(**init_args))
+
+"""
+>>> agent = Agent()
+>>> agent.add_property()
+What type of property?
+What payment type?
+(house, apartment) house
+(purchase, rental) rental
+Enter the square feet: 900
+Enter number of bedrooms: 2
+Enter number of baths: one and a half
+Is the yard fenced?
+Is there a garage?
+(yes, no) yes
+(attached, detached, none) detached
+How many stories? 1
+[ 91 ]When Objects are Alike
+What is the monthly rent? 1200
+What are the estimated utilities? included
+Is the property furnished?
+(yes, no) no
+>>> agent.add_property()
+What type of property?
+What payment type?
+(house, apartment) apartment
+(purchase, rental) purchase
+Enter the square feet: 800
+Enter number of bedrooms: 3
+Enter number of baths: 2
+What laundry facilities does the property have?
+(coin, ensuite,
+one) ensuite
+Does the property have a balcony? (yes, no, solarium) yes
+What is the selling price? $200,000
+What are the estimated taxes? 1500
+>>> agent.display_properties()
+PROPERTY DETAILS
+================
+square footage: 900
+bedrooms: 2
+bathrooms: one and a half
+HOUSE DETAILS
+# of stories: 1
+garage: detached
+fenced yard: yes
+RENTAL DETAILS
+rent: 1200
+estimated utilities: included
+furnished: no
+PROPERTY DETAILS
+================
+square footage: 800
+bedrooms: 3
+bathrooms: 2
+APARTMENT DETAILS
+[ 92 ]Chapter 3
+laundry: ensuite
+has balcony: yes
+PURCHASE DETAILS
+selling price: $200,000
+estimated taxes: 1500
+>>>
+"""
+
+
