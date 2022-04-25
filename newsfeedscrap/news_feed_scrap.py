@@ -27,10 +27,7 @@ def news_feed_filter(page_object):
 
 
 def get_news_title(feed):
-    try:
-        return feed.find(name="img").get("title")
-    except AttributeError:
-        return ""
+    return feed.title(string=True)[0]
 
 
 def get_news_time(feed):
@@ -55,8 +52,9 @@ def get_publisher_news_time_from_feed_url(feed_url):
 
     author_name = get_news_publisher(soup_object)
     published_date = get_news_time(soup_object)
+    title = get_news_title(soup_object)
 
-    return author_name, published_date
+    return title, author_name, published_date
 
 
 def parse_html_news_feed_to_elements(page_content):
@@ -64,14 +62,14 @@ def parse_html_news_feed_to_elements(page_content):
     filtered_news_feed = news_feed_filter(soup_object)
     news_feed_data = []
     for feed in filtered_news_feed:
-        news_title = get_news_title(feed)
+        # news_title = get_news_title(feed)
         news_feed_url = get_news_feed_url(feed)
-        author, published_date = get_publisher_news_time_from_feed_url(
+        title, author, published_date = get_publisher_news_time_from_feed_url(
             news_feed_url
         )
         news_feed_data.append(
             {
-                "title": news_title,
+                "title": title,
                 "url": f"{BASE_URL}{news_feed_url}",
                 "author": author,
                 "date": published_date,
@@ -91,8 +89,8 @@ def main():
     # 1. Define th logic to look for number of pages or last feed timestamp
     # 2. Scheduler to run every one hr to collect the latest data from last collected info
     # 3. Timezone conversion. Currently the timezone is in ET (Eastern Time)
-    # 4. ...
-
+    # 4. Fix title missing issue - Some records does not have img tag which would cause title access error. [Fixed]
+    # 5. Decode/remove unicode chars in the title string
 
 if __name__ == "__main__":
     main()
